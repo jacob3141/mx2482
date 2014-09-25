@@ -1,0 +1,3 @@
+[submodule "libqjackaudio"]
+	path = libqjackaudio
+	url = https://github.com/cybercatalyst/qjackaudio.git
