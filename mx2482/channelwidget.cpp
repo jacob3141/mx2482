@@ -34,25 +34,56 @@ ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     ui(new Ui::ChannelWidget)
 {
     ui->setupUi(this);
+
+    // Set channel number in UI
     ui->channelNumberLabel->setText(QString("%1").arg(channelNumber));
 
-    _channelIn = QJackClient::instance()->registerAudioInPort(QString("ch%1_in").arg(channelNumber));
-    _auxSend = QJackClient::instance()->registerAudioOutPort(QString("ch%1_aux_send").arg(channelNumber));
-    _auxReturn = QJackClient::instance()->registerAudioInPort(QString("ch%1_aux_ret").arg(channelNumber));
-    _channelOut = QJackClient::instance()->registerAudioOutPort(QString("ch%1_out").arg(channelNumber));
+    // Create JACK ports
+    QJackClient *jackClient = QJackClient::instance();
+    _channelIn  = jackClient->registerAudioInPort (QString("ch%1_in")       .arg(channelNumber));
+    _auxSend    = jackClient->registerAudioOutPort(QString("ch%1_aux_send") .arg(channelNumber));
+    _auxReturn  = jackClient->registerAudioInPort (QString("ch%1_aux_ret")  .arg(channelNumber));
+    _channelOut = jackClient->registerAudioOutPort(QString("ch%1_out")      .arg(channelNumber));
 
+    // Create input and fader stage amplifiers
     _inputStage = new QAmplifier();
     _inputStage->setGain(ui->gainDial->value());
+
     _faderStage = new QAmplifier();
     _faderStage->setGain(ui->volumeVerticalSlider->value());
+
+    // Create aux pre and post amplifiers
     _auxPre = new QAmplifier();
     _auxPre->setGain(ui->auxSendDial->value());
     _auxPost = new QAmplifier();
     _auxPost->setGain(ui->auxReturnDial->value());
-    _equalizer = new QEqualizer(64, 32);
 
+    // Create equalizer
+    _equalizer = new QEqualizer(256, 128);
+
+    // Create equalizer controls
+    _lowsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::LowShelf);
+    _lowsEqControl->setAmount(ui->loDial->value());
+    _lowsEqControl->setControlFrequency(ui->loFreqDial->value());
+    _midsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::Band);
+    _midsEqControl->setAmount(ui->midDial->value());
+    _midsEqControl->setControlFrequency(ui->midFreqDial->value());
+    _highsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::HighShelf);
+    _highsEqControl->setAmount(ui->hiDial->value());
+    _highsEqControl->setControlFrequency(6000);
+    _equalizer->update();
+
+    // Connect UI elements to widgets
     connect(ui->gainDial, SIGNAL(valueChanged(int)), _inputStage, SLOT(setGain(int)));
     connect(ui->volumeVerticalSlider, SIGNAL(valueChanged(int)), _faderStage, SLOT(setGain(int)));
+
+    connect(ui->loDial, SIGNAL(valueChanged(int)), _lowsEqControl, SLOT(setAmount(int)));
+    connect(ui->loFreqDial, SIGNAL(valueChanged(int)), _lowsEqControl, SLOT(setControlFrequency(int)));
+
+    connect(ui->midDial, SIGNAL(valueChanged(int)), _midsEqControl, SLOT(setAmount(int)));
+    connect(ui->midFreqDial, SIGNAL(valueChanged(int)), _midsEqControl, SLOT(setControlFrequency(int)));
+
+    connect(ui->hiDial, SIGNAL(valueChanged(int)), _highsEqControl, SLOT(setAmount(int)));
 }
 
 ChannelWidget::~ChannelWidget()
@@ -62,15 +93,21 @@ ChannelWidget::~ChannelWidget()
 
 void ChannelWidget::process(QSampleBuffer targetSampleBuffer)
 {
+    // Get the hardware input buffer for this channel input
     QSampleBuffer inputSampleBuffer = _channelIn->sampleBuffer();
+
+    // Copy all data to a memory buffer
     inputSampleBuffer.copyTo(targetSampleBuffer);
 
+    // Process input stage amplifier
     _inputStage->process(targetSampleBuffer);
 
+    // Check if EQ is activated and process
     if(ui->equalizerOnPushButton->isChecked()) {
         _equalizer->process(targetSampleBuffer);
     }
 
+    // Check if aux send/return is activated and process
     if(ui->auxOnPushButton->isChecked()) {
         // Attenuate signal
         _auxPre->process(targetSampleBuffer);
@@ -82,15 +119,19 @@ void ChannelWidget::process(QSampleBuffer targetSampleBuffer)
         _auxPost->process(targetSampleBuffer);
     }
 
-    _faderStage->process(targetSampleBuffer);    
-    _peak = QUnits::linearToDb(targetSampleBuffer.peak());
+    // Process fader stage amplifier
+    _faderStage->process(targetSampleBuffer);
 
+    // Determine peak and convert to dB.
+    _peakDb = QUnits::linearToDb(targetSampleBuffer.peak());
+
+    // Transfer data to channel direct out.
     targetSampleBuffer.copyTo(_channelOut->sampleBuffer());
 }
 
 void ChannelWidget::updateInterface()
 {
-    ui->progressBar->setValue((int)_peak);
+    ui->progressBar->setValue((int)_peakDb);
 }
 
 double ChannelWidget::panorama()

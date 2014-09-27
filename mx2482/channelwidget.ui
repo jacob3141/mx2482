@@ -408,13 +408,19 @@ font-size: 12px;</string>
          <string notr="true"/>
         </property>
         <property name="minimum">
-         <number>-50</number>
+         <number>200</number>
         </property>
         <property name="maximum">
-         <number>50</number>
+         <number>6000</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
         </property>
         <property name="pageStep">
          <number>3</number>
+        </property>
+        <property name="value">
+         <number>4000</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -423,7 +429,7 @@ font-size: 12px;</string>
          <bool>false</bool>
         </property>
         <property name="notchTarget">
-         <double>10.000000000000000</double>
+         <double>100.000000000000000</double>
         </property>
         <property name="notchesVisible">
          <bool>true</bool>
@@ -626,13 +632,16 @@ font-size: 12px;</string>
          <string notr="true"/>
         </property>
         <property name="minimum">
-         <number>-50</number>
+         <number>20</number>
         </property>
         <property name="maximum">
-         <number>50</number>
+         <number>200</number>
         </property>
         <property name="pageStep">
          <number>3</number>
+        </property>
+        <property name="value">
+         <number>100</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

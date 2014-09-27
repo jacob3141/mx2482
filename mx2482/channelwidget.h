@@ -30,6 +30,7 @@
 // QJackAudio includes
 #include <QJackClient>
 #include <QEqualizer>
+#include <QEqualizerControl>
 #include <QAmplifier>
 #include <QJackPort>
 
@@ -95,6 +96,13 @@ private:
     /** Equalizer for this channel. */
     QEqualizer *_equalizer;
 
+    /** EQ control for low frequencies. */
+    QEqualizerControl *_lowsEqControl;
+    /** EQ control for mid frequencies. */
+    QEqualizerControl *_midsEqControl;
+    /** EQ control for high frequencies. */
+    QEqualizerControl *_highsEqControl;
+
     /** QJackAudio input port for this channel. */
     QJackPort *_channelIn;
     /** QJackAudio aux send output port for this channel. */
@@ -105,7 +113,7 @@ private:
     QJackPort *_channelOut;
 
     /** Last peak value. */
-    double _peak;
+    double _peakDb;
 };
 
 #endif // CHANNELWIDGET_H
