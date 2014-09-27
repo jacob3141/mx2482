@@ -65,12 +65,18 @@ ChannelWidget::ChannelWidget(int channelNumber, QWidget *parent) :
     _lowsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::LowShelf);
     _lowsEqControl->setAmount(ui->loDial->value());
     _lowsEqControl->setControlFrequency(ui->loFreqDial->value());
+    _lowsEqControl->setQ(1.2);
+
     _midsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::Band);
     _midsEqControl->setAmount(ui->midDial->value());
     _midsEqControl->setControlFrequency(ui->midFreqDial->value());
+    _midsEqControl->setBandwidth(500.0);
+
     _highsEqControl = _equalizer->createEqualizerControl(QEqualizerControl::HighShelf);
     _highsEqControl->setAmount(ui->hiDial->value());
-    _highsEqControl->setControlFrequency(6000);
+    _highsEqControl->setControlFrequency(12000);
+    _highsEqControl->setQ(0.5);
+
     _equalizer->update();
 
     // Connect UI elements to widgets

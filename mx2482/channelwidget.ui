@@ -341,7 +341,7 @@ font-size: 12px;</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
-font-size: 12px;</string>
+font-size: 10px;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -379,6 +379,11 @@ font-size: 12px;</string>
           <height>20</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -411,7 +416,7 @@ font-size: 12px;</string>
          <number>200</number>
         </property>
         <property name="maximum">
-         <number>6000</number>
+         <number>12000</number>
         </property>
         <property name="singleStep">
          <number>1</number>
@@ -565,7 +570,7 @@ font-size: 12px;</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(200, 220, 255);
 color: black;
-font-size: 12px;</string>
+font-size: 10px;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>

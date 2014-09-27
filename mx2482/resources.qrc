@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>mx2482logo.png</file>
+        <file>mx2482-appicon.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>FreePixel.ttf</file>
