@@ -441,7 +441,7 @@ void MainMixerWidget::on_loadStatePushButton_clicked()
         QFile file(targetFileName);
 
         if(file.open(QIODevice::ReadOnly)) {
-            QJsonDocument jsonDocument = QJsonDocument::fromBinaryData(file.readAll());
+            QJsonDocument jsonDocument = QJsonDocument::fromJson(file.readAll());
             file.close();
             stateFromJson(jsonDocument.object());
         } else {
