@@ -24,6 +24,7 @@
 // Own includes
 #include "mainmixerwidget.h"
 #include "ui_mainmixerwidget.h"
+#include "aboutdialog.h"
 
 // Qt includes
 #include <QFontDatabase>
@@ -454,8 +455,55 @@ void MainMixerWidget::on_loadStatePushButton_clicked()
 
 void MainMixerWidget::on_aboutPushButton_clicked()
 {
+    AboutDialog aboutDialog;
+    aboutDialog.exec();
 }
 
 void MainMixerWidget::resetControls()
 {
+    ui->subgroup1VolumeVerticalSlider->setValue(0);
+    ui->subgroup2VolumeVerticalSlider->setValue(0);
+    ui->subgroup3VolumeVerticalSlider->setValue(0);
+    ui->subgroup4VolumeVerticalSlider->setValue(0);
+    ui->subgroup5VolumeVerticalSlider->setValue(0);
+    ui->subgroup6VolumeVerticalSlider->setValue(0);
+    ui->subgroup7VolumeVerticalSlider->setValue(0);
+    ui->subgroup8VolumeVerticalSlider->setValue(0);
+
+    ui->main1VolumeVerticalSlider->setValue(0);
+    ui->main2VolumeVerticalSlider->setValue(0);
+
+    ui->subgroup1MutePushButton->setChecked(false);
+    ui->subgroup2MutePushButton->setChecked(false);
+    ui->subgroup3MutePushButton->setChecked(false);
+    ui->subgroup4MutePushButton->setChecked(false);
+    ui->subgroup5MutePushButton->setChecked(false);
+    ui->subgroup6MutePushButton->setChecked(false);
+    ui->subgroup7MutePushButton->setChecked(false);
+    ui->subgroup8MutePushButton->setChecked(false);
+
+    ui->main1MutePushButton->setChecked(false);
+    ui->main2MutePushButton->setChecked(false);
+
+    ui->subgroup1SoloPushButton->setChecked(false);
+    ui->subgroup2SoloPushButton->setChecked(false);
+    ui->subgroup3SoloPushButton->setChecked(false);
+    ui->subgroup4SoloPushButton->setChecked(false);
+    ui->subgroup5SoloPushButton->setChecked(false);
+    ui->subgroup6SoloPushButton->setChecked(false);
+    ui->subgroup7SoloPushButton->setChecked(false);
+    ui->subgroup8SoloPushButton->setChecked(false);
+
+    ui->subgroup1MainPushButton->setChecked(true);
+    ui->subgroup2MainPushButton->setChecked(true);
+    ui->subgroup3MainPushButton->setChecked(true);
+    ui->subgroup4MainPushButton->setChecked(true);
+    ui->subgroup5MainPushButton->setChecked(true);
+    ui->subgroup6MainPushButton->setChecked(true);
+    ui->subgroup7MainPushButton->setChecked(true);
+    ui->subgroup8MainPushButton->setChecked(true);
+
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        channelWidget->resetControls();
+    }
 }

@@ -239,3 +239,31 @@ void ChannelWidget::stateFromJson(QJsonObject jsonObject)
 
     ui->mainPushButton->setChecked(jsonObject.value("onMain").toBool());
 }
+
+void ChannelWidget::resetControls()
+{
+    ui->gainDial->setValue(0);
+
+    ui->equalizerOnPushButton->setChecked(false);
+    ui->hiDial->setValue(0);
+    ui->midFreqDial->setValue(4000);
+    ui->midDial->setValue(0);
+    ui->loFreqDial->setValue(200);
+    ui->loDial->setValue(0);
+
+    ui->auxOnPushButton->setChecked(false);
+    ui->auxSendDial->setValue(0);
+    ui->auxReturnDial->setValue(0);
+
+    ui->mutePushButton->setChecked(false);
+    ui->soloPushButton->setChecked(false);
+
+    ui->subgroup12PushButton->setChecked(false);
+    ui->subgroup34PushButton->setChecked(false);
+    ui->subgroup56PushButton->setChecked(false);
+    ui->subgroup78PushButton->setChecked(false);
+
+    ui->volumeVerticalSlider->setValue(0);
+
+    ui->mainPushButton->setChecked(false);
+}

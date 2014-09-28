@@ -20,17 +20,20 @@ SOURCES += \
     mainwindow.cpp \
     main.cpp \
     channelwidget.cpp \
-    mainmixerwidget.cpp
+    mainmixerwidget.cpp \
+    aboutdialog.cpp
 
 HEADERS += \
     mainwindow.h \
     channelwidget.h \
-    mainmixerwidget.h
+    mainmixerwidget.h \
+    aboutdialog.h
 
 FORMS += \
     mainwindow.ui \
     channelwidget.ui \
-    mainmixerwidget.ui
+    mainmixerwidget.ui \
+    aboutdialog.ui
 
 RESOURCES += \
     resources.qrc

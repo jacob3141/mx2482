@@ -77,6 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Take off!
     jackClient->startAudioProcessing();
+
+    // Reset controls to default values
+    _mainMixerWidget->resetControls();
 }
 
 void MainWindow::process()

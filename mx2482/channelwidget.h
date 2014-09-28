@@ -89,6 +89,9 @@ public:
     /** Recalls the state from a JSON object. */
     void stateFromJson(QJsonObject jsonObject);
 
+    /** Resets all controls to their default positions. */
+    void resetControls();
+
 private:
     Ui::ChannelWidget *ui;
 

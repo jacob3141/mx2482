@@ -69,6 +69,9 @@ public:
     /** Recalls the state from a JSON object. */
     void stateFromJson(QJsonObject jsonObject);
 
+    /** Resets all controls to their default positions. */
+    void resetControls();
+
 public slots:
     /** Update the visual interface. */
     void updateInterface();
@@ -80,8 +83,6 @@ public slots:
 
 private:
     Ui::MainMixerWidget *ui;
-
-    void resetControls();
 
     /** Update timer used to update the visual interface periodically. */
     QTimer _updateTimer;
