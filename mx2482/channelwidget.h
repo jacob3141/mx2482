@@ -26,6 +26,7 @@
 
 // Qt includes
 #include <QWidget>
+#include <QJsonObject>
 
 // QJackAudio includes
 #include <QJackClient>
@@ -81,6 +82,12 @@ public:
 
     /** @returns true, when this channel is routed on main. */
     bool isOnMain();
+
+    /** Transfers the current channel state into a JSON object. */
+    QJsonObject stateToJson();
+
+    /** Recalls the state from a JSON object. */
+    void stateFromJson(QJsonObject jsonObject);
 
 private:
     Ui::ChannelWidget *ui;

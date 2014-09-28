@@ -1,4 +1,4 @@
-QT += core gui
+QT += core gui widgets
 OBJECTS_DIR = obj
 MOC_DIR = moc
 DESTDIR = bin

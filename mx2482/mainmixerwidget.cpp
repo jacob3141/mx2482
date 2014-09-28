@@ -27,6 +27,10 @@
 
 // Qt includes
 #include <QFontDatabase>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QStandardPaths>
+#include <QJsonDocument>
 
 MainMixerWidget::MainMixerWidget(QWidget *parent) :
     QWidget(parent),
@@ -258,6 +262,110 @@ void MainMixerWidget::process()
     _mainPeak2 = QUnits::linearToDb(main2SampleBuffer.peak());
 }
 
+QJsonObject MainMixerWidget::stateToJson()
+{
+    QJsonObject jsonObject;
+
+    jsonObject.insert("subgroup1Gain", ui->subgroup1VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup2Gain", ui->subgroup2VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup3Gain", ui->subgroup3VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup4Gain", ui->subgroup4VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup5Gain", ui->subgroup5VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup6Gain", ui->subgroup6VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup7Gain", ui->subgroup7VolumeVerticalSlider->value());
+    jsonObject.insert("subgroup8Gain", ui->subgroup8VolumeVerticalSlider->value());
+
+    jsonObject.insert("main1Gain", ui->main1VolumeVerticalSlider->value());
+    jsonObject.insert("main2Gain", ui->main2VolumeVerticalSlider->value());
+
+    jsonObject.insert("subgroup1Muted", ui->subgroup1MutePushButton->isChecked());
+    jsonObject.insert("subgroup2Muted", ui->subgroup2MutePushButton->isChecked());
+    jsonObject.insert("subgroup3Muted", ui->subgroup3MutePushButton->isChecked());
+    jsonObject.insert("subgroup4Muted", ui->subgroup4MutePushButton->isChecked());
+    jsonObject.insert("subgroup5Muted", ui->subgroup5MutePushButton->isChecked());
+    jsonObject.insert("subgroup6Muted", ui->subgroup6MutePushButton->isChecked());
+    jsonObject.insert("subgroup7Muted", ui->subgroup7MutePushButton->isChecked());
+    jsonObject.insert("subgroup8Muted", ui->subgroup8MutePushButton->isChecked());
+
+    jsonObject.insert("main1Muted", ui->main1MutePushButton->isChecked());
+    jsonObject.insert("main2Muted", ui->main2MutePushButton->isChecked());
+
+    jsonObject.insert("subgroup1Soloed", ui->subgroup1SoloPushButton->isChecked());
+    jsonObject.insert("subgroup2Soloed", ui->subgroup2SoloPushButton->isChecked());
+    jsonObject.insert("subgroup3Soloed", ui->subgroup3SoloPushButton->isChecked());
+    jsonObject.insert("subgroup4Soloed", ui->subgroup4SoloPushButton->isChecked());
+    jsonObject.insert("subgroup5Soloed", ui->subgroup5SoloPushButton->isChecked());
+    jsonObject.insert("subgroup6Soloed", ui->subgroup6SoloPushButton->isChecked());
+    jsonObject.insert("subgroup7Soloed", ui->subgroup7SoloPushButton->isChecked());
+    jsonObject.insert("subgroup8Soloed", ui->subgroup8SoloPushButton->isChecked());
+
+    jsonObject.insert("subgroup1OnMain", ui->subgroup1MainPushButton->isChecked());
+    jsonObject.insert("subgroup2OnMain", ui->subgroup2MainPushButton->isChecked());
+    jsonObject.insert("subgroup3OnMain", ui->subgroup3MainPushButton->isChecked());
+    jsonObject.insert("subgroup4OnMain", ui->subgroup4MainPushButton->isChecked());
+    jsonObject.insert("subgroup5OnMain", ui->subgroup5MainPushButton->isChecked());
+    jsonObject.insert("subgroup6OnMain", ui->subgroup6MainPushButton->isChecked());
+    jsonObject.insert("subgroup7OnMain", ui->subgroup7MainPushButton->isChecked());
+    jsonObject.insert("subgroup8OnMain", ui->subgroup8MainPushButton->isChecked());
+
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        int channelNumber = _registeredChannels.key(channelWidget);
+        jsonObject.insert(QString("channel%1").arg(channelNumber), channelWidget->stateToJson());
+    }
+
+    return jsonObject;
+}
+
+void MainMixerWidget::stateFromJson(QJsonObject jsonObject)
+{
+    ui->subgroup1VolumeVerticalSlider->setValue(jsonObject.value("subgroup1Gain").toDouble());
+    ui->subgroup2VolumeVerticalSlider->setValue(jsonObject.value("subgroup2Gain").toDouble());
+    ui->subgroup3VolumeVerticalSlider->setValue(jsonObject.value("subgroup3Gain").toDouble());
+    ui->subgroup4VolumeVerticalSlider->setValue(jsonObject.value("subgroup4Gain").toDouble());
+    ui->subgroup5VolumeVerticalSlider->setValue(jsonObject.value("subgroup5Gain").toDouble());
+    ui->subgroup6VolumeVerticalSlider->setValue(jsonObject.value("subgroup6Gain").toDouble());
+    ui->subgroup7VolumeVerticalSlider->setValue(jsonObject.value("subgroup7Gain").toDouble());
+    ui->subgroup8VolumeVerticalSlider->setValue(jsonObject.value("subgroup8Gain").toDouble());
+
+    ui->main1VolumeVerticalSlider->setValue(jsonObject.value("main1Gain").toDouble());
+    ui->main2VolumeVerticalSlider->setValue(jsonObject.value("main2Gain").toDouble());
+
+    ui->subgroup1MutePushButton->setChecked(jsonObject.value("subgroup1Muted").toBool());
+    ui->subgroup2MutePushButton->setChecked(jsonObject.value("subgroup2Muted").toBool());
+    ui->subgroup3MutePushButton->setChecked(jsonObject.value("subgroup3Muted").toBool());
+    ui->subgroup4MutePushButton->setChecked(jsonObject.value("subgroup4Muted").toBool());
+    ui->subgroup5MutePushButton->setChecked(jsonObject.value("subgroup5Muted").toBool());
+    ui->subgroup6MutePushButton->setChecked(jsonObject.value("subgroup6Muted").toBool());
+    ui->subgroup7MutePushButton->setChecked(jsonObject.value("subgroup7Muted").toBool());
+    ui->subgroup8MutePushButton->setChecked(jsonObject.value("subgroup8Muted").toBool());
+
+    ui->main1MutePushButton->setChecked(jsonObject.value("main1Muted").toBool());
+    ui->main2MutePushButton->setChecked(jsonObject.value("main2Muted").toBool());
+
+    ui->subgroup1SoloPushButton->setChecked(jsonObject.value("subgroup1Soloed").toBool());
+    ui->subgroup2SoloPushButton->setChecked(jsonObject.value("subgroup2Soloed").toBool());
+    ui->subgroup3SoloPushButton->setChecked(jsonObject.value("subgroup3Soloed").toBool());
+    ui->subgroup4SoloPushButton->setChecked(jsonObject.value("subgroup4Soloed").toBool());
+    ui->subgroup5SoloPushButton->setChecked(jsonObject.value("subgroup5Soloed").toBool());
+    ui->subgroup6SoloPushButton->setChecked(jsonObject.value("subgroup6Soloed").toBool());
+    ui->subgroup7SoloPushButton->setChecked(jsonObject.value("subgroup7Soloed").toBool());
+    ui->subgroup8SoloPushButton->setChecked(jsonObject.value("subgroup8Soloed").toBool());
+
+    ui->subgroup1MainPushButton->setChecked(jsonObject.value("subgroup1OnMain").toBool());
+    ui->subgroup2MainPushButton->setChecked(jsonObject.value("subgroup2OnMain").toBool());
+    ui->subgroup3MainPushButton->setChecked(jsonObject.value("subgroup3OnMain").toBool());
+    ui->subgroup4MainPushButton->setChecked(jsonObject.value("subgroup4OnMain").toBool());
+    ui->subgroup5MainPushButton->setChecked(jsonObject.value("subgroup5OnMain").toBool());
+    ui->subgroup6MainPushButton->setChecked(jsonObject.value("subgroup6OnMain").toBool());
+    ui->subgroup7MainPushButton->setChecked(jsonObject.value("subgroup7OnMain").toBool());
+    ui->subgroup8MainPushButton->setChecked(jsonObject.value("subgroup8OnMain").toBool());
+
+    foreach(ChannelWidget *channelWidget, _registeredChannels) {
+        int channelNumber = _registeredChannels.key(channelWidget);
+        channelWidget->stateFromJson(jsonObject.value(QString("channel%1").arg(channelNumber)).toObject());
+    }
+}
+
 void MainMixerWidget::updateInterface()
 {
     QJackClient *jackClient = QJackClient::instance();
@@ -284,4 +392,70 @@ void MainMixerWidget::updateInterface()
 
     ui->main1ProgressBar->setValue((int)_mainPeak1);
     ui->main2ProgressBar->setValue((int)_mainPeak2);
+}
+
+void MainMixerWidget::on_clearPushButton_clicked()
+{
+    if(QMessageBox::Yes == QMessageBox::warning(this,
+        tr("Reset controls"),
+        tr("Are you sure you want to reset all controls?"),
+        QMessageBox::Cancel, QMessageBox::Yes)) {
+        resetControls();
+    }
+}
+
+void MainMixerWidget::on_saveStatePushButton_clicked()
+{
+    QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString targetFileName = QFileDialog::getSaveFileName(this,
+                                                      tr("Save state"),
+                                                      homeLocations.at(0),
+                                                      tr("MX2482 State (*.mx2482)"));
+    if(!targetFileName.isEmpty()) {
+        if(!targetFileName.endsWith(".mx2482")) {
+            targetFileName.append(".mx2482");
+        }
+
+        QFile file(targetFileName);
+
+        if(file.open(QIODevice::WriteOnly)) {
+            QJsonDocument jsonDocument(stateToJson());
+            file.write(jsonDocument.toJson());
+            file.close();
+        } else {
+            QMessageBox::critical(this,
+                                  tr("Could not save state"),
+                                  QString(tr("Could not open file for write: %1")).arg(targetFileName));
+        }
+    }
+}
+
+void MainMixerWidget::on_loadStatePushButton_clicked()
+{
+    QStringList homeLocations = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    QString targetFileName = QFileDialog::getOpenFileName(this,
+                                                      tr("Load state"),
+                                                      homeLocations.at(0),
+                                                      tr("MX2482 State (*.mx2482)"));
+    if(!targetFileName.isEmpty()) {
+        QFile file(targetFileName);
+
+        if(file.open(QIODevice::ReadOnly)) {
+            QJsonDocument jsonDocument = QJsonDocument::fromBinaryData(file.readAll());
+            file.close();
+            stateFromJson(jsonDocument.object());
+        } else {
+            QMessageBox::critical(this,
+                                  tr("Could not load state"),
+                                  QString(tr("Could not open file for read: %1")).arg(targetFileName));
+        }
+    }
+}
+
+void MainMixerWidget::on_aboutPushButton_clicked()
+{
+}
+
+void MainMixerWidget::resetControls()
+{
 }

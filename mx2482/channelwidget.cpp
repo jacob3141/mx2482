@@ -179,3 +179,63 @@ bool ChannelWidget::isOnMain()
 {
     return ui->mainPushButton->isChecked();
 }
+
+QJsonObject ChannelWidget::stateToJson()
+{
+    QJsonObject jsonObject;
+
+    jsonObject.insert("inputGain", ui->gainDial->value());
+
+    jsonObject.insert("eqActive", ui->equalizerOnPushButton->isChecked());
+    jsonObject.insert("highAmount", ui->hiDial->value());
+    jsonObject.insert("midFrequency", ui->midFreqDial->value());
+    jsonObject.insert("midAmount", ui->midDial->value());
+    jsonObject.insert("lowFrequency", ui->loFreqDial->value());
+    jsonObject.insert("lowAmount", ui->loDial->value());
+
+    jsonObject.insert("auxActive", ui->auxOnPushButton->isChecked());
+    jsonObject.insert("auxSendGain", ui->auxSendDial->value());
+    jsonObject.insert("auxReturnGain", ui->auxReturnDial->value());
+
+    jsonObject.insert("muted", ui->mutePushButton->isChecked());
+    jsonObject.insert("soloed", ui->soloPushButton->isChecked());
+
+    jsonObject.insert("inSubgroup12", ui->subgroup12PushButton->isChecked());
+    jsonObject.insert("inSubgroup34", ui->subgroup34PushButton->isChecked());
+    jsonObject.insert("inSubgroup56", ui->subgroup56PushButton->isChecked());
+    jsonObject.insert("inSubgroup78", ui->subgroup78PushButton->isChecked());
+
+    jsonObject.insert("faderGain", ui->volumeVerticalSlider->value());
+
+    jsonObject.insert("onMain", ui->mainPushButton->isChecked());
+
+    return jsonObject;
+}
+
+void ChannelWidget::stateFromJson(QJsonObject jsonObject)
+{
+    ui->gainDial->setValue(jsonObject.value("inputGain").toDouble());
+
+    ui->equalizerOnPushButton->setChecked(jsonObject.value("eqActive").toBool());
+    ui->hiDial->setValue(jsonObject.value("highAmount").toDouble());
+    ui->midFreqDial->setValue(jsonObject.value("midFrequency").toDouble());
+    ui->midDial->setValue(jsonObject.value("midAmount").toDouble());
+    ui->loFreqDial->setValue(jsonObject.value("lowFrequency").toDouble());
+    ui->loDial->setValue(jsonObject.value("lowAmount").toDouble());
+
+    ui->auxOnPushButton->setChecked(jsonObject.value("auxActive").toBool());
+    ui->auxSendDial->setValue(jsonObject.value("auxSendGain").toDouble());
+    ui->auxReturnDial->setValue(jsonObject.value("auxReturnGain").toDouble());
+
+    ui->mutePushButton->setChecked(jsonObject.value("muted").toBool());
+    ui->soloPushButton->setChecked(jsonObject.value("soloed").toBool());
+
+    ui->subgroup12PushButton->setChecked(jsonObject.value("inSubgroup12").toBool());
+    ui->subgroup34PushButton->setChecked(jsonObject.value("inSubgroup34").toBool());
+    ui->subgroup56PushButton->setChecked(jsonObject.value("inSubgroup56").toBool());
+    ui->subgroup78PushButton->setChecked(jsonObject.value("inSubgroup78").toBool());
+
+    ui->volumeVerticalSlider->setValue(jsonObject.value("faderGain").toDouble());
+
+    ui->mainPushButton->setChecked(jsonObject.value("onMain").toBool());
+}

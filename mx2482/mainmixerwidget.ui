@@ -2997,7 +2997,7 @@ border: 1px solid rgb(60, 60, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="main1SoloPushButton">
+             <widget class="QLabel" name="label_28">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -3011,19 +3011,10 @@ border: 1px solid rgb(60, 60, 60);
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
-border: 1px solid rgb(60, 60, 60);
-}</string>
+               <string notr="true">background-color: rgba(0, 0, 0, 0.0);</string>
               </property>
               <property name="text">
-               <string>Solo</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
+               <string/>
               </property>
              </widget>
             </item>
@@ -3170,7 +3161,7 @@ border: 1px solid rgb(60, 60, 60);
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="main2SoloPushButton">
+             <widget class="QLabel" name="label_33">
               <property name="minimumSize">
                <size>
                 <width>42</width>
@@ -3184,19 +3175,10 @@ border: 1px solid rgb(60, 60, 60);
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton:checked {
-	background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.295455, stop:0 rgba(216, 156, 156, 255), stop:1 rgba(255, 195, 195, 255));
-border: 1px solid rgb(60, 60, 60);
-}</string>
+               <string notr="true">background-color: rgba(0, 0, 0, 0.0);</string>
               </property>
               <property name="text">
-               <string>Solo</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
+               <string/>
               </property>
              </widget>
             </item>

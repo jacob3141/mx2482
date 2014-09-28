@@ -63,12 +63,25 @@ public:
     /** Performs all that is necessary to process the channel signal. */
     void process();
 
+    /** Transfers the mixer state into a JSON object. */
+    QJsonObject stateToJson();
+
+    /** Recalls the state from a JSON object. */
+    void stateFromJson(QJsonObject jsonObject);
+
 public slots:
     /** Update the visual interface. */
     void updateInterface();
 
+    void on_clearPushButton_clicked();
+    void on_saveStatePushButton_clicked();
+    void on_loadStatePushButton_clicked();
+    void on_aboutPushButton_clicked();
+
 private:
     Ui::MainMixerWidget *ui;
+
+    void resetControls();
 
     /** Update timer used to update the visual interface periodically. */
     QTimer _updateTimer;

@@ -51,6 +51,16 @@ MainWindow::MainWindow(QWidget *parent) :
     hBoxLayout->setSpacing(0);
     hBoxLayout->setMargin(0);
 
+    QWidget *leftBorderWidget = new QWidget();
+    QWidget *rightBorderWidget = new QWidget();
+    leftBorderWidget->setMinimumWidth(32);
+    leftBorderWidget->setMaximumWidth(32);
+    leftBorderWidget->setStyleSheet("background: url(:/images/border-left.png);");
+    rightBorderWidget->setMinimumWidth(32);
+    rightBorderWidget->setMaximumWidth(32);
+    rightBorderWidget->setStyleSheet("background: url(:/images/border-right.png);");
+
+    hBoxLayout->addWidget(leftBorderWidget);
     _mainMixerWidget = new MainMixerWidget();
     for(int i = 0; i < 24; i++) {
         ChannelWidget *channelWidget = new ChannelWidget(i + 1);
@@ -58,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
         hBoxLayout->addWidget(channelWidget);
     }
     hBoxLayout->addWidget(_mainMixerWidget);
+    hBoxLayout->addWidget(rightBorderWidget);
 
     QWidget *widget = new QWidget();
     widget->setStyleSheet("background-color: rgb(120, 120, 120);");
@@ -83,4 +94,6 @@ void MainWindow::closeEvent(QCloseEvent *closeEvent)
     QJackClient::instance()->stopAudioProcessing();
     QMainWindow::closeEvent(closeEvent);
 }
+
+
 

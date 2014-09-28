@@ -2,6 +2,8 @@
     <qresource prefix="/images">
         <file>mx2482logo.png</file>
         <file>mx2482-appicon.png</file>
+        <file>border-right.png</file>
+        <file>border-left.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>FreePixel.ttf</file>
